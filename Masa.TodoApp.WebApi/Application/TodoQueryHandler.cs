@@ -10,12 +10,13 @@ namespace Masa.TodoApp.WebApi.Application;
 public class TodoQueryHandler
 {
     readonly TodoDbContext _todoDbContext;
+
     public TodoQueryHandler(TodoDbContext todoDbContext) => _todoDbContext = todoDbContext;
 
     [EventHandler]
     public async Task GetListAsync(TodoGetListQuery query)
     {
-        var todoDbQuery = _todoDbContext.Set<TodoEntity>().AsNoTracking();
+        var todoDbQuery = _todoDbContext.Set<TodoEntity>();
         query.Result = await todoDbQuery.Select(e => e.Adapt<TodoGetListDto>()).ToListAsync();
     }
 }

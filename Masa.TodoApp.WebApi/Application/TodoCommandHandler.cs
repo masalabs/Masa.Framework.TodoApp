@@ -9,6 +9,7 @@ namespace Masa.TodoApp.WebApi.Application;
 public class TodoCommandHandler
 {
     readonly TodoDbContext _todoDbContext;
+
     public TodoCommandHandler(TodoDbContext todoDbContext) => _todoDbContext = todoDbContext;
 
     [EventHandler]

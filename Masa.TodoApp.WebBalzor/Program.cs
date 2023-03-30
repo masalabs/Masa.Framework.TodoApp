@@ -3,9 +3,10 @@ using Masa.TodoApp.WebBalzor.ApiCallers;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+
 builder.Services.AddMasaBlazor();
-builder.Services.Configure<TodoServiceOptions>(builder.Configuration.GetSection("TodoService"));
-builder.Services.AddAutoRegistrationCaller(typeof(Program).Assembly);
+builder.Services.Configure<TodoServiceOptions>(builder.Configuration.GetSection("TodoService"))
+    .AddAutoRegistrationCaller(typeof(Program).Assembly);
 
 var app = builder.Build();
 
