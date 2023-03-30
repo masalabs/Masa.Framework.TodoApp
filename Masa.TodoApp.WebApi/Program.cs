@@ -6,27 +6,21 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEventBus();
-builder.Services.AddMasaDbContext<TodoDbContext>(opt => opt.UseSqlite());
-builder.Services.AddMasaMinimalAPIs();
+builder.Services.AddEventBus()
+    .AddMasaDbContext<TodoDbContext>(opt => opt.UseSqlite())
+    .AddMasaMinimalAPIs(option => option.MapHttpMethodsForUnmatched = new string[] { "Post" })
+    .AddAutoInject();
+
 //Swagger依赖Endpoint的一些服务，必须AddEndpointsApiExplorer，不然swagger不能使用
 builder.Services.AddEndpointsApiExplorer()
     .AddSwaggerGen(c =>
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
-        {
-            Title = "TodoApp",
-            Version = "v1",
-            Contact = new OpenApiContact { Name = "TodoApp", }
-        });
-
+        c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoApp", Version = "v1", Contact = new OpenApiContact { Name = "TodoApp", } });
         foreach (var item in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.xml"))
-        {
             c.IncludeXmlComments(item, true);
-        }
         c.DocInclusionPredicate((docName, action) => true);
     });
-builder.Services.AddAutoInject();
+
 var app = builder.Build();
 
 app.UseMasaExceptionHandler();
@@ -40,5 +34,6 @@ using var context = app.Services.CreateScope().ServiceProvider.GetService<TodoDb
     }
 }
 #endregion
-app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApp"));
+if (app.Environment.IsDevelopment())
+    app.UseSwagger().UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApp"));
 app.Run();
