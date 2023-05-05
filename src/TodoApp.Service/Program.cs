@@ -22,19 +22,16 @@ app.UseMasaExceptionHandler();
 
 app.MapMasaMinimalAPIs();
 
-#region MigrationDb
-using var context = app.Services.CreateScope().ServiceProvider.GetService<TodoAppDbContext>();
-{
-    if (context!.GetService<IRelationalDatabaseCreator>().HasTables() == false)
-    {
-        context!.GetService<IRelationalDatabaseCreator>().CreateTables();
-    }
-}
-#endregion
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger().UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoAppApp"));
+
+    #region MigrationDb
+    using var context = app.Services.CreateScope().ServiceProvider.GetService<TodoAppDbContext>();
+    {
+        context!.Database.EnsureCreated();
+    }
+    #endregion
 }
 
 app.Run();
