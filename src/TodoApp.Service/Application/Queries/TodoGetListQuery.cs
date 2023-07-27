@@ -2,5 +2,5 @@
 
 public record TodoGetListQuery : Query<List<TodoGetListDto>>
 {
-    public override List<TodoGetListDto> Result { get; set; }
+    public override List<TodoGetListDto> Result { get; set; } = new();
 }

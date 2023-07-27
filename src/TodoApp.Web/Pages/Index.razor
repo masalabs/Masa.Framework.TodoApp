@@ -103,9 +103,8 @@
 </MContainer>
 
 @code {
-
     [Inject]
-    public TodoCaller TodoCaller { get; set; }
+    public TodoCaller TodoCaller { get; set; } = default!;
 
     string _newTodo = "";
     string _updateTodo = "";
