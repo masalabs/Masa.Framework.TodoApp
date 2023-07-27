@@ -3,7 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEventBus()
     .AddMasaDbContext<TodoAppDbContext>(opt =>
     {
-    opt.UseSqlite();
+        opt.UseSqlite();
     })
     .AddMasaMinimalAPIs(option => option.MapHttpMethodsForUnmatched = new string[] { "Post" })
     .AddAutoInject();
@@ -12,7 +12,10 @@ builder.Services.AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
     {
         options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "TodoAppApp", Version = "v1", Contact = new Microsoft.OpenApi.Models.OpenApiContact { Name = "TodoAppApp", } });
-        foreach (var item in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.xml")) options.IncludeXmlComments(item, true);
+        foreach (var item in Directory.GetFiles(Directory.GetCurrentDirectory(), "*.xml"))
+        {
+            options.IncludeXmlComments(item, true);
+        }
         options.DocInclusionPredicate((docName, action) => true);
     });
 
