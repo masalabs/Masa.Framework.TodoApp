@@ -2,7 +2,7 @@
 
 public class TodoAppDbContext : MasaDbContext
 {
-    public DbSet<TodoEntity> Todos { get; set; }
+    public DbSet<TodoEntity> Todos { get; set; } = default!;
 
     public TodoAppDbContext(MasaDbContextOptions<TodoAppDbContext> options) : base(options)
     {
